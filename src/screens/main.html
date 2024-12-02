@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+    ${GLOBAL_STYLE}
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        overflow: hidden;
+      }
+      .btn {
+        width: 57.5px;
+        height: 50px;
+        border: 1px solid #333;
+        font-size: 18px;
+        padding-block: 5px;
+      }
+
+      .btn:active {
+        filter: brightness(0.8);
+      }
+
+      .display {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        padding-inline: 10px;
+
+        height: 50px;
+        border: 1px solid #333;
+        color: white;
+        font-weight: 500;
+        font-size: 28px;
+        text-align: right;
+      }
+
+      .command {
+        background-color: goldenrod;
+        color: white;
+      }
+
+      .number {
+        background-color: #555;
+        color: white;
+      }
+
+      .exapnd-2 {
+        width: calc(57.5px * 2);
+      }
+    </style>
+  </head>
+  <script type="module">
+    const layout = [
+      {
+        key: "AC",
+        value: "AC",
+        type: "command",
+      },
+      {
+        key: "sign",
+        value: "+/-",
+        type: "command",
+      },
+      {
+        key: "module",
+        value: "%",
+        type: "command",
+      },
+      {
+        key: "divide",
+        value: "/",
+        type: "command",
+      },
+      {
+        key: "7",
+        value: "7",
+        type: "number",
+      },
+      {
+        key: "8",
+        value: "8",
+        type: "number",
+      },
+      {
+        key: "9",
+        value: "9",
+        type: "number",
+      },
+      {
+        key: "multiply",
+        value: "*",
+        type: "command",
+      },
+      {
+        key: "4",
+        value: "4",
+        type: "number",
+      },
+      {
+        key: "5",
+        value: "5",
+        type: "number",
+      },
+      {
+        key: "6",
+        value: "6",
+        type: "number",
+      },
+      {
+        key: "subtract",
+        value: "-",
+        type: "command",
+      },
+      {
+        key: "1",
+        value: "1",
+        type: "number",
+      },
+      {
+        key: "2",
+        value: "2",
+        type: "number",
+      },
+      {
+        key: "3",
+        value: "3",
+        type: "number",
+      },
+      {
+        key: "add",
+        value: "+",
+        type: "command",
+      },
+      {
+        key: "0",
+        value: "0",
+        type: "number",
+        expand: 2,
+      },
+      {
+        key: ".",
+        value: ".",
+        type: "number",
+      },
+      {
+        key: "equals",
+        value: "=",
+        type: "command",
+      },
+    ];
+
+    const display = document.querySelector("#display");
+    const buttons = document.querySelector("#buttons");
+
+    function handleClick(btn) {
+      if (btn.type === "command") {
+        if (btn.key === "AC") {
+          display.textContent = "0";
+        } else if (btn.key === "equals") {
+          display.textContent = eval(display.textContent);
+        }
+      } else if (btn.type === "number") {
+        if (btn.value === ".") {
+          if (!display.textContent.includes(".")) {
+            display.textContent += btn.value;
+          }
+          return;
+        }
+        if (display.textContent === "0") {
+          display.textContent = btn.value;
+        } else {
+          display.textContent += btn.value;
+        }
+      }
+    }
+
+    layout.forEach((item) => {
+      const button = document.createElement("button");
+      button.innerHTML = item.value;
+      button.classList.add("btn");
+      if (item.type === "command") {
+        button.classList.add("command");
+      } else if (item.type === "number") {
+        button.classList.add("number");
+      }
+      if (item.expand !== undefined) {
+        button.classList.add("exapnd-" + item.expand);
+      }
+      button.addEventListener("click", () => handleClick(item));
+      buttons.appendChild(button);
+    });
+  </script>
+  <body>
+    <div id="display" class="display">0</div>
+    <div id="buttons"></div>
+  </body>
+</html>
