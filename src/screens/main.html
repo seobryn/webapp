@@ -163,6 +163,11 @@
           display.textContent = "0";
         } else if (btn.key === "equals") {
           display.textContent = eval(display.textContent);
+        } else if (btn.key === "sign") {
+          display.textContent =
+            display.textContent.charAt(0) === "-"
+              ? display.textContent.slice(1)
+              : "-" + display.textContent;
         }
       } else if (btn.type === "number") {
         if (btn.value === ".") {
